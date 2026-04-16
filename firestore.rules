@@ -1,0 +1,64 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Helper function to validate card data
+    function isValidCard() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['japanese', 'reading', 'english', 'audioUrl', 'createdAt', 'progress'])
+        && data.japanese is string
+        && data.reading is string
+        && data.english is string
+        && data.audioUrl is string
+        && data.createdAt is timestamp
+        && data.progress is map
+        && data.progress.keys().hasAll(['ej', 'je']);
+    }
+
+    // Helper function to validate progress data
+    function isValidProgress(prog) {
+      return prog is map
+        && prog.keys().hasAll(['repsCorrect', 'learned', 'interval', 'nextDue'])
+        && prog.repsCorrect is int
+        && prog.repsCorrect >= 0
+        && prog.learned is bool
+        && prog.interval is int
+        && prog.interval >= 0
+        && prog.nextDue is string;
+    }
+
+    // User's cards collection
+    match /users/{userId}/cards/{cardId} {
+      // Allow read if user owns the cards
+      allow read: if isOwner(userId);
+
+      // Allow create if user owns the collection and data is valid
+      allow create: if isOwner(userId)
+        && isValidCard()
+        && isValidProgress(request.resource.data.progress.ej)
+        && isValidProgress(request.resource.data.progress.je);
+
+      // Allow update if user owns the card
+      // (less strict validation on update to allow Cloud Function to add audioUrl)
+      allow update: if isOwner(userId);
+
+      // Allow delete if user owns the card
+      allow delete: if isOwner(userId);
+    }
+
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

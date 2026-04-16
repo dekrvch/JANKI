@@ -1,0 +1,29 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Audio files: users can read their own audio, but only Cloud Functions can write
+    match /users/{userId}/audio/{audioFile} {
+      // Allow read if user owns the audio file
+      allow read: if isOwner(userId);
+
+      // Deny write from clients - only Cloud Functions can write audio files
+      allow write: if false;
+    }
+
+    // Deny all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

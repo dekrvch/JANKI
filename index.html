@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JANKI - Japanese Flashcards</title>
+</head>
+<body>
+  <div class="container">
+    <!-- Loading View -->
+    <div id="view-loading" class="view active">
+      <div class="loading">Loading...</div>
+    </div>
+
+    <!-- Login View -->
+    <div id="view-login" class="view">
+      <h1>Japanese Flashcards</h1>
+      <div class="card-box">
+        <p style="margin-bottom: 20px; color: #666;">Sign in to start learning Japanese with spaced repetition!</p>
+        <button id="btn-google-signin" class="btn-primary">Sign in with Google</button>
+      </div>
+    </div>
+
+    <!-- Home View -->
+    <div id="view-home" class="view">
+      <h1>Japanese Flashcards</h1>
+      <div id="home-stats" class="stats"></div>
+      <div id="home-message" class="message info" style="display: none;"></div>
+      <button id="btn-start-session" class="btn-primary">Start Session</button>
+      <button id="btn-manage-cards" class="btn-secondary">Manage Cards</button>
+      <button id="btn-sign-out" class="btn-secondary" style="margin-top: 20px;">Sign Out</button>
+    </div>
+
+    <!-- Session View -->
+    <div id="view-session" class="view">
+      <div class="progress-header">
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <div id="progress-text" class="progress-text"></div>
+      </div>
+
+      <!-- Question State -->
+      <div id="question-state">
+        <div id="direction-label" class="direction-label"></div>
+        <div id="rep-badge" class="rep-badge" style="display: none;"></div>
+        <div id="card-box" class="card-box"></div>
+
+        <!-- Keyboard input (for EJ cards) -->
+        <div id="keyboard-input" style="display: none;">
+          <div id="answer-display" class="answer-display">
+            <div id="answer-display-text" class="answer-display-text placeholder">Type your answer...</div>
+            <button id="answer-clear" class="answer-clear">×</button>
+          </div>
+          <div id="hiragana-keyboard" class="hiragana-keyboard"></div>
+          <button id="btn-submit-keyboard" class="btn-primary">Submit Answer</button>
+        </div>
+
+        <!-- Text input (for JE cards) -->
+        <div id="text-input" style="display: none;">
+          <div class="answer-input-container">
+            <input id="answer-input" class="answer-input" type="text" placeholder="Type your answer..." />
+          </div>
+          <button id="btn-submit-text" class="btn-primary">Submit Answer</button>
+        </div>
+      </div>
+
+      <!-- Answer State -->
+      <div id="answer-state" style="display: none;">
+        <div id="user-answer-display" class="answer-reveal"></div>
+        <div class="correct-answer-box">
+          <div class="correct-answer-label">Correct Answer</div>
+          <div id="correct-answer-text" class="correct-answer-text"></div>
+          <button id="btn-play-audio" class="audio-button btn-small" style="display: none;">🔊 Play Audio</button>
+        </div>
+        <div class="grade-buttons">
+          <button id="btn-wrong" class="btn-wrong">Wrong</button>
+          <button id="btn-correct" class="btn-correct">Correct</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Done View -->
+    <div id="view-done" class="view">
+      <h1>Session Complete!</h1>
+      <div id="session-summary" class="summary"></div>
+      <button id="btn-continue" class="btn-primary">Continue</button>
+    </div>
+
+    <!-- Manage Cards View -->
+    <div id="view-manage" class="view">
+      <h1>Manage Cards</h1>
+
+      <div class="import-section">
+        <h2>Import Cards</h2>
+        <textarea id="import-json" placeholder='Paste JSON array here, e.g.:
+[
+  {"japanese": "猫", "reading": "ねこ", "english": "cat"},
+  {"japanese": "犬", "reading": "いぬ", "english": "dog"}
+]'></textarea>
+        <button id="btn-import" class="btn-primary">Import Cards</button>
+        <div id="import-message" style="display: none;"></div>
+      </div>
+
+      <h2>Your Cards (<span id="card-count">0</span>)</h2>
+      <div id="card-list" class="card-list"></div>
+
+      <div class="action-buttons">
+        <button id="btn-export" class="btn-secondary">Export Cards as JSON</button>
+        <button id="btn-reset" class="btn-secondary">Reset All Progress</button>
+        <button id="btn-back-home" class="btn-secondary">Back to Home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio player -->
+  <audio id="audio-player"></audio>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

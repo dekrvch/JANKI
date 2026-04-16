@@ -1,0 +1,10 @@
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBDhRTxq_5WKQ19xcZTSSbPRiWfn2_pZXY",
+  authDomain: "yanki-card.firebaseapp.com",
+  projectId: "yanki-card",
+  storageBucket: "yanki-card.firebasestorage.app",
+  messagingSenderId: "710151466734",
+  appId: "1:710151466734:web:9f5a20162b55e883554dff"
+};
+

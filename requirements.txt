@@ -1,0 +1,7 @@
+# Python dependencies for Google Cloud TTS audio generator
+
+# Firebase Admin SDK - for database and storage operations
+firebase-admin>=6.0.0
+
+# Google Cloud Text-to-Speech - for audio generation
+google-cloud-texttospeech>=2.14.0
